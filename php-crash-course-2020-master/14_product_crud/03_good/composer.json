@@ -1,0 +1,15 @@
+{
+    "name": "john/002",
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "you@example.com"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "psr-4": {
+            "app\\": "./"
+        }
+    }
+}

@@ -1,7 +1,7 @@
 <?php
 /** @var $pdo \PDO */
 require_once "../../database.php";
-$search = $_POST['search'] ?? '';
+$search = $_GET['search'] ?? '';
 if ($search) {
   $statement = $pdo->prepare('SELECT * FROM products WHERE title LIKE :title ORDER BY create_date DESC');
 $statement->bindValue(':title', "%$search%");
