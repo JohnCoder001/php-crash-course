@@ -2,10 +2,12 @@
 namespace app;
 
 use PDO;
+use product;
 
 class database
 {
 public \PDO $pdo;
+
 public function __construct()
 {
 $this->pdo = new \PDO
@@ -30,5 +32,40 @@ public function getproducts($search  = '')
     }
     $statement->execute();
 return  $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+public function getProductById($id)
+{
+  $statement = $this->pdo->prepare('SELECT * FROM products WHERE id = :id');
+$statement->bindValue(':id',$id);
+$statement->execute();
+return $statement->fetch(PDO::FETCH_ASSOC);
+}
+public function createproduct(product $product)
+{
+  $statement = $this->pdo->prepare("INSERT INTO products (title, image, description, price, `create-date`)
+  VALUES (:title, :image, :description, :price, :date)");
+$statement->bindValue(':title', $product->title);
+$statement->bindValue(':image', $product->imagepath );
+$statement->bindValue(':description', $product->description);
+$statement->bindValue(':price', $product->price);
+$statement->bindValue(':date', date('y-m-d H:i:s'));
+$statement->execute();
+}
+public function deleteproduct($id)
+{
+  $statement = $this->pdo->prepare('DELETE FROM products WHERE id = :id');
+  $statement->bindValue(':id', $id);
+  $statement->execute();
+}
+public function updateProduct(product $product)
+{
+  $statement = $this->pdo->prepare("UPDATE products SET title = :title, image = :image,
+description = :description, price = :price WHERE id = :id");
+$statement->bindValue(':title', $product->title);
+$statement->bindValue(':image', $product->imagepath );
+$statement->bindValue(':description', $product->description);
+$statement->bindValue(':price', $product->price);
+$statement->bindValue(':id', $product->id);
+$statement->execute();
 }
 }
